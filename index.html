@@ -8,16 +8,16 @@
         html, body {
             height: 100%;
             margin: 0;
-            overflow: hidden; /* 스크롤바 제거 */
+            overflow: hidden; 
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             font-family: Arial, sans-serif;
             text-align: center;
-            background: url('shooting.jpg') no-repeat center center fixed; /* 배경 이미지 */
+            background: url('shooting.jpg') no-repeat center center fixed; 
             background-size: cover;
-            color: white; /* 텍스트를 흰색으로 변경 */
+            color: white; 
         }
 
         body::before {
@@ -27,7 +27,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* 검은색 반투명 오버레이 */
+            background-color: rgba(0, 0, 0, 0.5); 
             z-index: -1;
         }
 
@@ -50,8 +50,8 @@
             font-size: 16px;
             cursor: pointer;
             margin-top: 20px;
-            background-color: #d3d3d3; /* 밝은 회색 배경 */
-            color: black; /* 버튼 텍스트는 검정 */
+            background-color: #d3d3d3; 
+            color: black; 
             border: none;
             border-radius: 5px;
         }
@@ -61,12 +61,12 @@
         }
 
         #startBtn:hover, #retryBtn:hover {
-            background-color: #c0c0c0; /* 버튼 hover 시 더 밝은 회색 */
+            background-color: #c0c0c0; 
         }
 
         #averageInfo {
             font-size: 14px;
-            color: white; /* 성인 평균 반응속도 텍스트 흰색 */
+            color: white; 
             margin-top: 10px;
         }
 
@@ -75,7 +75,7 @@
             flex-direction: column;
             align-items: center;
             margin-bottom: 20px;
-            color: white; /* 안내 메시지 흰색 */
+            color: white; 
         }
     </style>
 </head>
@@ -88,13 +88,12 @@
     <button id="startBtn">시작</button>
     <button id="retryBtn">다시 하기</button>
     
-    <!-- 이미지 태그 -->
+    
     <img id="targetImage" src="shoot.png" alt="Target Image">
 
     <div id="result"></div>
     <div id="averageInfo">성인의 평균 반응속도는 250ms입니다.</div>
 
-    <!-- 효과음 파일을 위한 오디오 태그 -->
     <audio id="clickSound" src="click_sound.mp3"></audio>
 
     <script>
@@ -106,20 +105,20 @@
         const title = document.getElementById('title');
         const instructions = document.getElementById('instructions');
         const averageInfo = document.getElementById('averageInfo');
-        const clickSound = document.getElementById('clickSound'); // 효과음 오디오 태그 참조
+        const clickSound = document.getElementById('clickSound'); 
         let startTime;
         let timeout;
         let clickCount = 0;
         let reactionTimes = [];
 
-        // 화면 안에 랜덤 위치를 생성하는 함수
+       
         function randomPosition() {
-            const screenWidth = 1000; // 최대 너비 1920px
-            const screenHeight = 500; // 최대 높이 1080px
-            const targetWidth = targetImage.offsetWidth; // 이미지의 너비
-            const targetHeight = targetImage.offsetHeight; // 이미지의 높이
+            const screenWidth = 1000; 
+            const screenHeight = 500; 
+            const targetWidth = targetImage.offsetWidth; 
+            const targetHeight = targetImage.offsetHeight; 
 
-            // 이미지가 화면 밖으로 나가지 않도록 범위 제한
+           
             const maxX = Math.min(window.innerWidth, screenWidth) - targetWidth;
             const maxY = Math.min(window.innerHeight, screenHeight) - targetHeight;
             
@@ -135,7 +134,7 @@
             targetImage.style.top = `${position.y}px`;
             targetImage.style.display = 'block';
 
-            startTime = new Date().getTime(); // 반응 시간 시작
+            startTime = new Date().getTime();
         }
 
         function hideTarget() {
@@ -144,22 +143,22 @@
 
         function startGame() {
             result.textContent = '';
-            startBtn.style.display = 'none'; // 시작 버튼 숨기기
-            retryBtn.style.display = 'none'; // 다시 하기 버튼 숨기기
-            messageContainer.style.display = 'none'; // 안내 메시지 숨기기
-            averageInfo.style.display = 'none'; // 성인의 평균 반응속도 숨기기
+            startBtn.style.display = 'none'; 
+            retryBtn.style.display = 'none'; 
+            messageContainer.style.display = 'none'; 
+            averageInfo.style.display = 'none';
             clickCount = 0;
             reactionTimes = [];
             
-            clickSound.load();  // 소리 미리 로드
+            clickSound.load(); 
 
-            const randomDelay = Math.random() * 1000 + 1000; // 1~2초 사이 랜덤 대기 시간
+            const randomDelay = Math.random() * 1000 + 1000;
             timeout = setTimeout(showTarget, randomDelay);
         }
 
         targetImage.addEventListener('click', () => {
-            clickSound.currentTime = 0;  // 매번 처음부터 소리 재생
-            clickSound.play(); // 클릭 시 효과음 재생
+            clickSound.currentTime = 0; 
+            clickSound.play(); 
 
             const endTime = new Date().getTime();
             const reactionTime = endTime - startTime;
@@ -168,35 +167,30 @@
 
             if (clickCount < 3) {
                 hideTarget();
-                const randomDelay = Math.random() * 1000 + 1000; // 다시 1~2초 사이 랜덤 대기 시간
+                const randomDelay = Math.random() * 1000 + 1000;
                 timeout = setTimeout(showTarget, randomDelay);
             } else {
-                // 3번 클릭 후 평균 반응 속도 계산
                 const avgReactionTime = Math.floor(reactionTimes.reduce((a, b) => a + b, 0) / reactionTimes.length);
                 
-                // 메시지 숨기고 결과를 그 자리에 표시
-                title.style.display = 'none'; // 제목 숨기기
-                instructions.style.display = 'none'; // 설명 숨기기
+          
+                title.style.display = 'none'; 
+                instructions.style.display = 'none'; 
                 result.textContent = `당신의 평균 반응속도는 ${avgReactionTime} ms 입니다.`;
-                result.style.fontSize = '40px'; // 글씨 크기 키우기
-                result.style.fontWeight = 'bold'; // 글씨 두껍게
-                result.style.display = 'block'; // 결과 표시
+                result.style.fontSize = '40px'; 
+                result.style.fontWeight = 'bold'; 
+                result.style.display = 'block'; 
                 
-                hideTarget(); // 마지막 클릭 후 이미지 숨기기
-                retryBtn.style.display = 'inline-block'; // 다시 하기 버튼 표시
-                averageInfo.style.display = 'block'; // 성인의 평균 반응속도 다시 보이기
+                hideTarget(); 
+                retryBtn.style.display = 'inline-block'; 
+                averageInfo.style.display = 'block'; 
             }
         });
 
-        // 시작 버튼 클릭 시 게임 시작
         startBtn.addEventListener('click', startGame);
-
-        // 다시 하기 버튼 클릭 시 게임 재시작
         retryBtn.addEventListener('click', () => {
-            // 다시 시작 시 메시지 복원
             title.style.display = 'block';
             instructions.style.display = 'block';
-            result.style.display = 'none'; // 결과 숨기기
+            result.style.display = 'none';
             startGame();
         });
     </script>
